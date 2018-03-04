@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Solve Sudoku with AI
 
 ## Synopsis
@@ -78,3 +79,6 @@ Contact ai-support@udacity.com if you don't have access to the forums or Slack t
 **Note:** The `pygame` library is required to visualize your solution -- however, the `pygame` module can be troublesome to install and configure. It should be installed by default with the AIND conda environment, but it is not reliable across all operating systems or versions. Please refer to the pygame documentation [here](http://www.pygame.org/download.shtml), or discuss among your peers in the slack group or discussion forum if you need help.
 
 Running `python solution.py` will automatically attempt to visualize your solution, but you mustuse the provided `assign_value` function (defined in `utils.py`) to track the puzzle solution progress for reconstruction during visuzalization.
+=======
+# AIND-Sudoku
+>>>>>>> 569f5b431676194a20ea7c3a86e39ec9c852375d
