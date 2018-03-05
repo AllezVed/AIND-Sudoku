@@ -49,9 +49,29 @@ def naked_twins(values):
     """
     # TODO: Implement this function!
     for unit in unitlist:
-        twinning = [box for box in unit if len(values[box]) == 2]
-        
+        duals = [box for box in unit if len(values[box]) == 2] #all units with 2 values
 
+        twin_possible = [pair for pair in itertools.combinations(duals, 2)]
+
+        for pair in twin_possible:
+            
+            unit_1 = pair[0]
+            unit_2 = pair[1]
+
+            if values[unit_1] == values[unit_2]: #find the twins
+                
+                for box in unit:
+                    
+                    box_tuple = [unit_1, unit_2]
+
+                    if box not in box_tuple:
+                        
+                        for value in values[unit_1]:
+                            
+                            values[box] = values[box].replace(value, '')
+    
+    return values
+                            
 
 
     raise NotImplementedError
