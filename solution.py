@@ -48,6 +48,12 @@ def naked_twins(values):
     strategy repeatedly).
     """
     # TODO: Implement this function!
+    for unit in unitlist:
+        twinning = [box for box in unit if len(values[box]) == 2]
+        
+
+
+
     raise NotImplementedError
 
 
