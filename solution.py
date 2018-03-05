@@ -13,7 +13,7 @@ dia_1 = [[rows[i] + cols[i] for i in range(len(rows))]] #primary diagonal
 dia_2 = [[rows[i] + cols_reversed[i] for i in range(len(rows))]] #reversed diagonal
 # TODO: Update the unit list to add the new diagonal units
 unitlist = unitlist + dia_1 + dia_2
-print(unitlist)
+
 
 # Must be called after all units (including diagonals) are added to the unitlist
 units = extract_units(unitlist, boxes)
