@@ -11,10 +11,15 @@ cols = '123456789'
 cols_reversed = cols[::-1]
 dia_1 = [[rows[i] + cols[i] for i in range(len(rows))]] #primary diagonal
 dia_2 = [[rows[i] + cols_reversed[i] for i in range(len(rows))]] #reversed diagonal
-# TODO: Update the unit list to add the new diagonal units
+
 unitlist = unitlist + dia_1 + dia_2
+# do_diagonal = 1 
+# # TODO: Update the unit list to add the new diagonal units
+# if do_diagonal == 1:
+#     unitlist = unitlist + dia_1 + dia_2
 
-
+# else:
+#     unitlist = row_units + column_units + square_units
 # Must be called after all units (including diagonals) are added to the unitlist
 units = extract_units(unitlist, boxes)
 peers = extract_peers(units, boxes)
@@ -94,16 +99,18 @@ def eliminate(values):
         The values dictionary with the assigned values eliminated from peers
     """
     # TODO: Copy your code from the classroom to complete this function
-    for val in values.keys():
-        if len(values[val]) == 1:
-            for val_other in peers[val]:
-                if values[val] in values[val_other]:
-                    values[val_other] = values[val_other].replace(values[val], "")
-
-            
-            
-    
+    # for val in values.keys():
+    #     if len(values[val]) == 1:
+    #         for val_other in peers[val]:
+    #             if values[val] in values[val_other]:
+    #                 values[val_other] = values[val_other].replace(values[val], "")
+    solved_values = [box for box in values.keys() if len(values[box]) == 1]
+    for box in solved_values:
+        digit = values[box]
+        for peer in peers[box]:
+            values[peer] = values[peer].replace(digit,'')
     return values
+
 
 
     raise NotImplementedError
@@ -163,7 +170,6 @@ def reduce_puzzle(values):
         values = eliminate(values)
         values = only_choice(values)
         values = naked_twins(values)
-
         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
         stalled = solved_values_before == solved_values_after
         if len([box for box in values.keys() if len(values[box]) == 0]):
@@ -194,24 +200,22 @@ def search(values):
     and extending it to call the naked twins strategy.
     """
     # TODO: Copy your code from the classroom to complete this function
+    "Using depth-first search and propagation, try all possible values."
+    # First, reduce the puzzle using the previous function
     values = reduce_puzzle(values)
-    # Choose one of the unfilled squares with the fewest possibilities
-    
     if values is False:
-        return False
-    if all(len(values[box]) == 1 for box in boxes):
-        return values
-    min_count, min_square = min((len(values[s]), s) for s in boxes if len(values[s]) > 1) 
-    # Now use recursion to solve each one of the resulting sudokus, and if one returns a value (not False), return that answer!
-    for value in values[min_square]:
-        branch = values.copy()
-        branch[min_square] = value
-        possible_solution = search(branch)
-    
-        if possible_solution:
-            return possible_solution
-
-    raise NotImplementedError
+        return False ## Failed earlier
+    if all(len(values[s]) == 1 for s in boxes): 
+        return values ## Solved!
+    # Choose one of the unfilled squares with the fewest possibilities
+    n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+    # Now use recurrence to solve each one of the resulting sudokus, and 
+    for value in values[s]:
+        new_sudoku = values.copy()
+        new_sudoku[s] = value
+        attempt = search(new_sudoku)
+        if attempt:
+            return attempt
 
 
 def solve(grid):
@@ -235,7 +239,7 @@ def solve(grid):
 
 
 if __name__ == "__main__":
-    diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    diag_sudoku_grid = '9.1....8.8.5.7..4.2.4....6...7......5..............83.3..6......9................'
     display(grid2values(diag_sudoku_grid))
     result = solve(diag_sudoku_grid)
     display(result)
